@@ -69,7 +69,7 @@ namespace Lobby
 
                     while (true)
                     {
-                        if (player.ReferenceHub.authManager.InstanceMode == CentralAuth.ClientInstanceMode.ReadyClient)
+                        if (player.IsReady)
                         {
 
 
