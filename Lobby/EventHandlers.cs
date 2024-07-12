@@ -183,7 +183,7 @@ namespace Lobby
             {
                 IsLobby = false;
 
-               if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
+              // if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
 
                 foreach (var player in Player.GetPlayers())
                 {
@@ -347,7 +347,7 @@ namespace Lobby
                     text += "\n";
                 }
 
-               IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
+               //IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
 
                 yield return Timing.WaitForSeconds(1f);
             }
