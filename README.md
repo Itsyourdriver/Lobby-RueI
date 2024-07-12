@@ -1,6 +1,8 @@
-# Lobby
+# Lobby - RueI
 [![Version](https://img.shields.io/github/v/release/MrAfitol/Lobby?sort=semver&style=flat-square&color=blue&label=Version)](https://github.com/MrAfitol/Lobby/releases)
 [![Downloads](https://img.shields.io/github/downloads/MrAfitol/Lobby/total?style=flat-square&color=yellow&label=Downloads)](https://github.com/MrAfitol/Lobby/releases)
+
+This is a fork of MrAfitol's Lobby plugin but with RueI support for my own server. I will not be updating this more than likely and you'll have to build it yourself. (and resolve dependencies yourself, I haven't uploaded the updated .csproj file.)
 
 
 A plugin that adds a lobby when waiting for players
