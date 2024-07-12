@@ -1,16 +1,15 @@
-﻿namespace Lobby
+namespace Lobby
 {
-    using MapGeneration;
     using PlayerRoles;
     using System.Collections.Generic;
     using System.ComponentModel;
 
     public class Config
     {
-        [Description("Main text ({seconds} - Either it shows how much is left until the start, or the server status is \"Server is suspended\", \"Round starting\", <rainbow> - Change the next text a rainbow color, </rainbow> - Close a rainbow color tag)")]
+        [Description("Main text ({seconds} - Either it shows how much is left until the start, or the server status is \"Server is suspended\", \"Round starting\")")]
         public string TitleText { get; set; } = "<color=#F0FF00><b>Waiting for players, {seconds}</b></color>";
 
-        [Description("Text showing the number of players ({players} - Text with the number of players, <rainbow> - Change the next text a rainbow color, </rainbow> - Close a rainbow color tag)")]
+        [Description("Text showing the number of players ({players} - Text with the number of players)")]
         public string PlayerCountText { get; set; } = "<color=#FFA600><i>{players}</i></color>";
 
         [Description("What will be written if the lobby is locked?")]
@@ -31,8 +30,17 @@
         [Description("What will be written when there is more than one player on the server?")]
         public string PlayersJoinText { get; set; } = "players joined";
 
-        [Description("Vertical text position.")]
+        [Description("Should we use Broadcast instead of Hints?")]
+        public bool UseBC { get; set; } = false;
+
+        [Description("Clear previous broadcast? (If not, the text may not appear until the previous broadcast has disappeared)")]
+        public bool ClearPrevBC { get; set; } = true;
+
+        [Description("Vertical text position. (If UseBC mode is enabled, this option does not work)")]
         public int VerticalPos { get; set; } = 25;
+
+        [Description("Hint Vertical Text Position, used for RueI Support. (If UseBC mode is enabled, this option does not work)")]
+        public int HintVerticalPos { get; set; } = 25;
 
         [Description("Top text size")]
         public int TopTextSize { get; set; } = 50;
@@ -62,7 +70,7 @@
         public bool AllowIcom { get; set; } = true;
 
         [Description("Display text on Intercom? (Works only when lobby Intercom type)")]
-        public bool DisplayInIcom { get; set; } = true;
+        public bool DisplayInIcom { get; set; } = false;
 
         [Description("What size will the text be in the Intercom? (The larger the value, the smaller it will be)")]
         public int IcomTextSize { get; set; } = 20;
@@ -76,68 +84,17 @@
         [Description("In what locations can people spawn? (If it is less than 1, a random one will be selected)")]
         public List<LobbyLocationType> LobbyLocation { get; set; } = new List<LobbyLocationType>()
         {
-            LobbyLocationType.Tower_1,
-            LobbyLocationType.Tower_2,
-            LobbyLocationType.Tower_3,
-            LobbyLocationType.Tower_4,
-            LobbyLocationType.Tower_5,
+            LobbyLocationType.Tower,
             LobbyLocationType.Intercom,
             LobbyLocationType.GR18,
-            LobbyLocationType.SCP173
+            LobbyLocationType.SCP173,
+            LobbyLocationType.Evac,
+            LobbyLocationType.Surface,
+            LobbyLocationType.O49,
+            LobbyLocationType.Nine3Nine,
+            LobbyLocationType.Bathroom,
+            LobbyLocationType.Plants,
+            LobbyLocationType.DCell,
         };
-
-        [Description("This option is for a custom lobby location")]
-        public List<CustomRoomLocationData> CustomRoomLocations { get; set; } = new List<CustomRoomLocationData>()
-        {
-            new CustomRoomLocationData()
-            {
-                RoomNameType = RoomName.EzGateA,
-                OffsetX = 0,
-                OffsetY = 1,
-                OffsetZ = 0,
-                RotationX = 0,
-                RotationY = 0,
-                RotationZ = 0,
-            },
-        };
-
-        [Description("This option is for a custom lobby location")]
-        public List<CustomLocationData> CustomLocations { get; set; } = new List<CustomLocationData>()
-        {
-            new CustomLocationData()
-            {
-                PositionX = 39.262f,
-                PositionY = 1014.112f,
-                PositionZ = -31.844f,
-                RotationX = 0,
-                RotationY = 0,
-                RotationZ = 0,
-            },
-        };
-    }
-
-    public class LocationData
-    {
-    }
-
-    public class CustomRoomLocationData : LocationData
-    {
-        public RoomName RoomNameType { get; set; }
-        public float OffsetX { get; set; }
-        public float OffsetY { get; set; }
-        public float OffsetZ { get; set; }
-        public float RotationX { get; set; }
-        public float RotationY { get; set; }
-        public float RotationZ { get; set; }
-    }
-
-    public class CustomLocationData : LocationData
-    {
-        public float PositionX { get; set; }
-        public float PositionY { get; set; }
-        public float PositionZ { get; set; }
-        public float RotationX { get; set; }
-        public float RotationY { get; set; }
-        public float RotationZ { get; set; }
     }
 }
