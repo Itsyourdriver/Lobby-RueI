@@ -40,7 +40,7 @@ namespace Lobby
         public int VerticalPos { get; set; } = 25;
 
         [Description("Hint Vertical Text Position, used for RueI Support. (If UseBC mode is enabled, this option does not work)")]
-        public int HintVerticalPos { get; set; } = 25;
+        public int HintVerticalPos { get; set; } = 800;
 
         [Description("Top text size")]
         public int TopTextSize { get; set; } = 50;
