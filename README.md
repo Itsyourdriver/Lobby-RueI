@@ -19,7 +19,7 @@ The idea is taken from the [plugin](https://github.com/Michal78900/WaitAndChillR
   
   ***Or***
   
-   - *Run the command in console `p install MrAfitol/Lobby`*
+   - *Run the command in console `p install Itsyourdriver/Lobby-RueI`*
   
 ## View
 https://user-images.githubusercontent.com/76150070/208076431-7e7a98e3-d1b3-4365-a989-a09e7fa7f639.mp4
