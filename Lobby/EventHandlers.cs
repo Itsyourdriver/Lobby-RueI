@@ -20,6 +20,7 @@ namespace Lobby
     using System.Linq;
     using UnityEngine;
     using RueI.Extensions;
+    
 
     public class EventHandlers
     {
@@ -65,34 +66,51 @@ namespace Lobby
             {
                 if (IsLobby && (GameCore.RoundStart.singleton.NetworkTimer > 1 || GameCore.RoundStart.singleton.NetworkTimer == -2))
                 {
-                    Timing.CallDelayed(1f, () =>
+
+                    while (true)
                     {
-                        player.SetRole(Lobby.Instance.Config.LobbyPlayerRole);
-
-                        player.IsGodModeEnabled = true;
-
-                        if (Lobby.Instance.Config.LobbyInventory.Count > 0)
+                        if (player.ReferenceHub.authManager.InstanceMode == CentralAuth.ClientInstanceMode.ReadyClient)
                         {
-                            foreach (var item in Lobby.Instance.Config.LobbyInventory)
+
+
+                            Timing.CallDelayed(1f, () =>
                             {
-                                player.AddItem(item);
-                            }
+                                player.SetRole(Lobby.Instance.Config.LobbyPlayerRole);
+
+                                player.IsGodModeEnabled = true;
+
+                                if (Lobby.Instance.Config.LobbyInventory.Count > 0)
+                                {
+                                    foreach (var item in Lobby.Instance.Config.LobbyInventory)
+                                    {
+                                        player.AddItem(item);
+                                    }
+                                }
+
+                                Timing.CallDelayed(0.1f, () =>
+                                {
+                                    player.Position = LobbyLocationHandler.Point.transform.position;
+                                    player.Rotation = LobbyLocationHandler.Point.transform.rotation.eulerAngles;
+
+                                    if (Lobby.Instance.Config.EnableMovementBoost)
+                                    {
+                                        player.EffectsManager.EnableEffect<MovementBoost>();
+                                        player.EffectsManager.ChangeState<MovementBoost>(Lobby.Instance.Config.MovementBoostIntensity);
+                                    }
+                                    if (Lobby.Instance.Config.InfinityStamina)
+                                    {
+                                        player.EffectsManager.EnableEffect<Invigorated>();
+                                    }
+
+                                   
+                                });
+                            });
+                            break;
                         }
-
-                        Timing.CallDelayed(0.1f, () =>
-                        {
-                            player.Position = LobbyLocationHandler.Point.transform.position;
-                            player.Rotation = LobbyLocationHandler.Point.transform.rotation.eulerAngles;
-
-                            if (Lobby.Instance.Config.EnableMovementBoost)
-                            {
-                                player.EffectsManager.EnableEffect<MovementBoost>();
-                                player.EffectsManager.ChangeState<MovementBoost>(Lobby.Instance.Config.MovementBoostIntensity);
-                            }
-                            if (Lobby.Instance.Config.InfinityStamina) player.EffectsManager.EnableEffect<Invigorated>();
-                        });
-                    });
+                    }
                 }
+                
+
             }
             catch (Exception e)
             {
@@ -165,7 +183,7 @@ namespace Lobby
             {
                 IsLobby = false;
 
-               //if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
+               if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
 
                 foreach (var player in Player.GetPlayers())
                 {
@@ -329,7 +347,7 @@ namespace Lobby
                     text += "\n";
                 }
 
-               //IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
+               IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
 
                 yield return Timing.WaitForSeconds(1f);
             }
