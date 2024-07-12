@@ -1,4 +1,4 @@
-# Lobby - RueI
+# Lobby with RueI Support
 [![Version](https://img.shields.io/github/v/release/MrAfitol/Lobby?sort=semver&style=flat-square&color=blue&label=Version)](https://github.com/MrAfitol/Lobby/releases)
 [![Downloads](https://img.shields.io/github/downloads/MrAfitol/Lobby/total?style=flat-square&color=yellow&label=Downloads)](https://github.com/MrAfitol/Lobby/releases)
 
