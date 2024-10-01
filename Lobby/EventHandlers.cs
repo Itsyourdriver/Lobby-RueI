@@ -20,7 +20,7 @@ namespace Lobby
     using System.Linq;
     using UnityEngine;
     using RueI.Extensions;
-    
+
 
     public class EventHandlers
     {
@@ -31,6 +31,8 @@ namespace Lobby
         private LobbyLocationType curLobbyLocationType;
 
         public static bool IsLobby = true;
+
+        public bool haveWeDoneFunction = false;
 
         [PluginEvent(ServerEventType.WaitingForPlayers)]
         public void OnWaitingForPlayers()
@@ -72,8 +74,7 @@ namespace Lobby
                         if (player.IsReady)
                         {
 
-
-                            Timing.CallDelayed(1f, () =>
+                            Timing.CallDelayed(0.5f, () =>
                             {
                                 player.SetRole(Lobby.Instance.Config.LobbyPlayerRole);
 
@@ -99,17 +100,17 @@ namespace Lobby
                                     }
                                     if (Lobby.Instance.Config.InfinityStamina)
                                     {
-                                        player.EffectsManager.EnableEffect<Invigorated>();
+                                        player.EffectsManager.EnableEffect<CustomPlayerEffects.Scp207>();
                                     }
 
-                                   
+
                                 });
                             });
                             break;
                         }
                     }
                 }
-                
+
 
             }
             catch (Exception e)
@@ -183,17 +184,19 @@ namespace Lobby
             {
                 IsLobby = false;
 
-              // if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
+                // if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
+
+                if (!string.IsNullOrEmpty(IntercomDisplay._singleton.Network_overrideText)) IntercomDisplay._singleton.Network_overrideText = "";
 
                 foreach (var player in Player.GetPlayers())
                 {
                     if (player.Role != RoleTypeId.Overwatch) player.SetRole(RoleTypeId.Spectator);
-                   
+
                     Timing.CallDelayed(0.1f, () =>
                     {
                         player.IsGodModeEnabled = false;
                         if (Lobby.Instance.Config.EnableMovementBoost) player.EffectsManager.DisableEffect<MovementBoost>();
-                        if (Lobby.Instance.Config.InfinityStamina) player.EffectsManager.DisableEffect<Invigorated>();
+                        if (Lobby.Instance.Config.InfinityStamina) player.EffectsManager.DisableEffect<CustomPlayerEffects.Scp207>();
                     });
                 }
             }
@@ -299,8 +302,12 @@ namespace Lobby
 
                 foreach (Player ply in Player.GetPlayers())
                 {
-                    if (Lobby.Instance.Config.UseBC) ply.SendBroadcast(text.ToString(), 1, Broadcast.BroadcastFlags.Normal, Lobby.Instance.Config.ClearPrevBC);
-                    else DisplayCore.Get(ply.ReferenceHub).SetElemTemp(text.ToString(), (float)Lobby.Instance.Config.HintVerticalPos, TimeSpan.FromSeconds(1f), new TimedElemRef<SetElement>());
+                    if (ply.IsReady == true)
+                    {
+                        if (Lobby.Instance.Config.UseBC) ply.SendBroadcast(text.ToString(), 1, Broadcast.BroadcastFlags.Normal, Lobby.Instance.Config.ClearPrevBC);
+                        else DisplayCore.Get(ply.ReferenceHub).SetElemTemp(text.ToString(), (float)Lobby.Instance.Config.HintVerticalPos, TimeSpan.FromSeconds(1f), new TimedElemRef<SetElement>());
+
+                    }
 
                 }
 
@@ -347,7 +354,9 @@ namespace Lobby
                     text += "\n";
                 }
 
-               //IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
+                //IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
+
+                IntercomDisplay._singleton.Network_overrideText = $"<size={Lobby.Instance.Config.IcomTextSize}>" + text + "</size>";
 
                 yield return Timing.WaitForSeconds(1f);
             }
